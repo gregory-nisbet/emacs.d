@@ -45,9 +45,9 @@
 (require-package 'web-mode)
 (require-package 'paredit)
 
-(add-to-list 'load-path "~/Workspace/emacs.d/god-mode/")
-(add-to-list 'load-path "~/Workspace/emacs.d/god-kmacro/")
-(add-to-list 'load-path "~/Workspace/emacs.d/window-number/")
+(add-to-list 'load-path "~/.emacs.d/god-mode/")
+(add-to-list 'load-path "~/.emacs.d/god-kmacro/")
+(add-to-list 'load-path "~/.emacs.d/window-number/")
 
 (require 'god-mode)
 (require 'ace-jump-mode)
