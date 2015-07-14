@@ -1,7 +1,7 @@
 ;; minimal modal emacs config. cl-lib not actually needed. ^P and ^T swapped ^P is so much more common
 
 (require 'cl-lib)
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (require 'private)
 
 
@@ -17,12 +17,6 @@
 (setq-default indent-tabs-mode nil)
 (setq disabled-command-function nil)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
-(setq circe-network-options
-	  `(("Freenode"
-		 :nick ,private-nick
-		 :port 6697
-		 :nick ,private-nickserv-password)))
 
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
@@ -116,7 +110,7 @@
 (add-hook 'god-local-mode-hook
           (lambda ()
             (if god-local-mode
-                (setq cursor-type 'hollow)
+                (setq cursor-type 'bar)
               (setq cursor-type 'box))))
 
 ;; create buffer local variable for storing whether we exited
@@ -182,3 +176,13 @@
             (message (format "Caught exception: [%s]" ex))
             (setq retval (cons 'exception (list ex))))))
      ,@clean-up))
+
+
+;; circe cleanup
+(setq circe-network-options
+	  `(("Freenode"
+		 :nick ,private-nick
+		 :port 6697
+		 :nick ,private-nickserv-password)))
+
+
