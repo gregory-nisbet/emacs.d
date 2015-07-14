@@ -1,4 +1,6 @@
-;; minimal modal emacs config. cl-lib not actually needed. ^P and ^T swapped ^P is so much more common
+;; modal emacs config
+;; uses god-mode pervasively
+;; 
 
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
@@ -22,7 +24,7 @@
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
 (defmacro global-window-shortcut (key-string which-window)
-  "goto window"
+  "create global shortcut C-c # for jumping to window #"
   `(global-set-key
     (kbd ,key-string)
     (lambda ()
@@ -41,7 +43,7 @@
 (require-package 'php-mode)
 (require-package 'ace-jump-mode)
 (require-package 'magit)
-(require-package 'circe)
+;; (require-package 'circe)                
 (require-package 'haskell-mode)
 (require-package 'key-chord)
 (require-package 'eww)
@@ -61,7 +63,7 @@
 (require 'php-mode)
 (require 'recentf)
 (require 'magit)
-(require 'circe)
+;; (require 'circe)
 (require 'haskell)
 (require 'eww)
 (require 'web-mode)
@@ -138,7 +140,7 @@
   (unwind-protect
       (condition-case ex
           ad-do-it
-        ('error (message (format "Caught exception [%s]" ex))))
+        ('error (message (format "Caught: [%s]" ex))))
     (progn
       (cl-assert god-local-mode-paused-kmacro)
       (god-local-mode god-local-mode-paused-kmacro)
@@ -159,7 +161,7 @@
   (unwind-protect
       (condition-case ex
           ad-do-it
-        ('error (message (format "Caught exception [%s]" ex))))
+        ('error (message (format "Caught: [%s]" ex))))
     (progn
       (cl-assert god-local-mode-paused-kmacro-call)
       (god-local-mode god-local-mode-paused-kmacro-call)
@@ -173,7 +175,7 @@
          (condition-case ex
              (setq retval (progn ,fn))
            ('error
-            (message (format "Caught exception: [%s]" ex))
+            (message (format "Caught: [%s]" ex))
             (setq retval (cons 'exception (list ex))))))
      ,@clean-up))
 
