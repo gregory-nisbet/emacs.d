@@ -40,38 +40,42 @@
       (package-refresh-contents)) 
     (package-install package)))
 
-(require-package 'php-mode)
+
 (require-package 'ace-jump-mode)
-(require-package 'magit)
+(require-package 'paredit)
+(require-package 'key-chord)
+
+
 ;; (require-package 'circe)                
 (require-package 'haskell-mode)
-(require-package 'key-chord)
 (require-package 'eww)
 (require-package 'web-mode)
-(require-package 'paredit)
 (require-package 'dockerfile-mode)
 (require-package 'markdown-mode)
 (require-package 'tuareg)
-
-
+(require-package 'php-mode)
+(require-package 'magit)
+  
 (add-to-list 'load-path "~/.emacs.d/god-mode/")
 (add-to-list 'load-path "~/.emacs.d/god-kmacro/")
 (add-to-list 'load-path "~/.emacs.d/window-number/")
 
 (require 'god-mode)
 (require 'ace-jump-mode)
-(require 'php-mode)
-(require 'recentf)
-(require 'magit)
-;; (require 'circe)
-(require 'haskell)
-(require 'eww)
-(require 'web-mode)
 (require 'paredit)
 (require 'window-number)
-(require 'dockerfile-mode) 
-(require 'markdown-mode)
-(require 'tuareg)
+(require 'recentf)
+
+(when window-system
+  (require 'magit)
+  ;; (require 'circe)
+  (require 'haskell)
+  (require 'eww)
+  (require 'web-mode)
+  (require 'php-mode)
+  (require 'dockerfile-mode) 
+  (require 'markdown-mode)
+  (require 'tuareg))
  
 ;; replace some functions with more useful ones
 ;; some of these are taken from
@@ -100,8 +104,8 @@
 (global-window-shortcut "C-c 8" 8)
 (global-window-shortcut "C-c 9" 9)
 (global-window-shortcut "C-c 0" 10)
-
-
+(global-set-key (kbd "C-c f") 'frameset-to-register)
+(global-set-key (kbd "C-c j") 'jump-to-register)
 
 
 (key-chord-mode +1)
