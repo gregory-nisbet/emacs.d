@@ -44,6 +44,7 @@
 (require-package 'eww)
 (require-package 'web-mode)
 (require-package 'paredit)
+(require-package 'dockerfile-mode)
 
 (add-to-list 'load-path "~/.emacs.d/god-mode/")
 (add-to-list 'load-path "~/.emacs.d/god-kmacro/")
@@ -60,6 +61,8 @@
 (require 'web-mode)
 (require 'paredit)
 (require 'window-number)
+(require 'dockerfile-mode) 
+
 
 ;; replace some functions with more useful ones
 ;; some of these are taken from
