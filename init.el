@@ -1,6 +1,9 @@
 ;; minimal modal emacs config. cl-lib not actually needed. ^P and ^T swapped ^P is so much more common
 
 (require 'cl-lib)
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'private)
+
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/") 
 			 ("org" . "http://orgmode.org/elpa/") 
@@ -14,6 +17,12 @@
 (setq-default indent-tabs-mode nil)
 (setq disabled-command-function nil)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+(setq circe-network-options
+	  `(("Freenode"
+		 :nick ,private-nick
+		 :port 6697
+		 :nick ,private-nickserv-password)))
 
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
@@ -44,6 +53,10 @@
 (require-package 'eww)
 (require-package 'web-mode)
 (require-package 'paredit)
+(require-package 'dockerfile-mode)
+(require-package 'markdown-mode)
+(require-package 'tuareg)
+
 
 (add-to-list 'load-path "~/.emacs.d/god-mode/")
 (add-to-list 'load-path "~/.emacs.d/god-kmacro/")
@@ -60,7 +73,10 @@
 (require 'web-mode)
 (require 'paredit)
 (require 'window-number)
-
+(require 'dockerfile-mode) 
+(require 'markdown-mode)
+(require 'tuareg)
+ 
 ;; replace some functions with more useful ones
 ;; some of these are taken from
 ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
