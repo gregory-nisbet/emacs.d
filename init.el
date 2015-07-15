@@ -20,6 +20,11 @@
 (setq disabled-command-function nil)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
+;; http://ergoemacs.org/emacs/emacs_alias.html
+(defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'list-buffers 'ibuffer)
+(defalias 'perl-mode 'cperl-mode)
+
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
@@ -40,21 +45,11 @@
       (package-refresh-contents)) 
     (package-install package)))
 
-
 (require-package 'ace-jump-mode)
 (require-package 'paredit)
 (require-package 'key-chord)
 
-
 ;; (require-package 'circe)                
-(require-package 'haskell-mode)
-(require-package 'eww)
-(require-package 'web-mode)
-(require-package 'dockerfile-mode)
-(require-package 'markdown-mode)
-(require-package 'tuareg)
-(require-package 'php-mode)
-(require-package 'magit)
   
 (add-to-list 'load-path "~/.emacs.d/god-mode/")
 (add-to-list 'load-path "~/.emacs.d/god-kmacro/")
@@ -65,8 +60,25 @@
 (require 'paredit)
 (require 'window-number)
 (require 'recentf)
+(require 'god-kmacro)
 
-(when window-system
+(defalias 'lom 'load-optional-modes)
+(defun load-optional-modes ()
+    "load non mandatory modes, keep start time down"
+  (interactive)
+
+  (require-package 'haskell-mode)
+  (require-package 'eww)
+  (require-package 'web-mode)
+  (require-package 'dockerfile-mode)
+  (require-package 'markdown-mode)
+  (require-package 'tuareg)
+  (require-package 'php-mode)
+  (require-package 'magit)
+  
+  
+
+  
   (require 'magit)
   ;; (require 'circe)
   (require 'haskell)
@@ -76,7 +88,11 @@
   (require 'dockerfile-mode) 
   (require 'markdown-mode)
   (require 'tuareg))
- 
+
+(when window-system
+  (load-optional-modes))
+
+
 ;; replace some functions with more useful ones
 ;; some of these are taken from
 ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
@@ -91,7 +107,6 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-z") 'god-mode)
-(global-set-key (kbd "C-c i") 'apropos)
 (key-chord-define-global "df" 'god-mode)
 (global-set-key (kbd "C-;") 'other-window)
 (global-window-shortcut "C-c 1" 1)
@@ -119,76 +134,5 @@
                 (setq cursor-type 'bar)
               (setq cursor-type 'box))))
 
-;; create buffer local variable for storing whether we exited
-;; god-mode for kmacro (this is independent of other pause and
-;; resume stuff.
-(defvar god-local-mode-paused-kmacro)
-(make-variable-buffer-local 'god-local-mode-paused-kmacro)
-(setf god-local-mode-paused-kmacro nil)
-;; advise key macros to start you in non-godmode regardless
-;; remember state before macro was executed
-(defvar god-local-mode-paused-kmacro-call)
-(make-variable-buffer-local 'god-local-mode-paused-kmacro-call)
-(setf god-local-mode-paused-kmacro-call nil)
-
-(defadvice kmacro-start-macro (before kmacro-start-no-godmode activate)
-  "disable godmode after kmacro begin"
-  ;; recursive kmacro god-mode status tracking is not implemented yet
-  ;; if the god-mode is not nil, then we're already in a macro
-  ;; or didn't cleanly reset the buffer local variable.
-  (cl-assert (not god-local-mode-paused-kmacro))
-  (setf god-local-mode-paused-kmacro (if god-local-mode +1 0))
-  (god-local-mode 0))
-
-(defadvice kmacro-end-macro (around kmacro-end-restore-godmode activate)
-  (unwind-protect
-      (condition-case ex
-          ad-do-it
-        ('error (message (format "Caught: [%s]" ex))))
-    (progn
-      (cl-assert god-local-mode-paused-kmacro)
-      (god-local-mode god-local-mode-paused-kmacro)
-      (setf god-local-mode-paused-kmacro nil))))
-        
-
-;; disable god mode and store previous god-mode state
-(defadvice kmacro-call-macro (before kmacro-call-no-godmode activate)
-  "disable god-mode before executing macro"
-  (cl-assert (not god-local-mode-paused-kmacro-call))
-  (setf god-local-mode-paused-kmacro-call (if god-local-mode 1 0))
-  (god-local-mode 0))
-
-;; reenable god-mode after executing keyboard macro
-;; wrap errors safely
-(defadvice kmacro-call-macro (around kmacro-call-restore-godmode activate)
-  "re-enable god-mode after executing macro"
-  (unwind-protect
-      (condition-case ex
-          ad-do-it
-        ('error (message (format "Caught: [%s]" ex))))
-    (progn
-      (cl-assert god-local-mode-paused-kmacro-call)
-      (god-local-mode god-local-mode-paused-kmacro-call)
-      (setf god-local-mode-paused-kmacro-call nil))))
-
-
-;; https://curiousprogrammer.wordpress.com/2009/06/08/error-handling-in-emacs-lisp/
-(defmacro safe-wrap (fn &rest clean-up)
-  `(unwind-protect
-       (let (retval)
-         (condition-case ex
-             (setq retval (progn ,fn))
-           ('error
-            (message (format "Caught: [%s]" ex))
-            (setq retval (cons 'exception (list ex))))))
-     ,@clean-up))
-
-
-;; circe cleanup
-(setq circe-network-options
-	  `(("Freenode"
-		 :nick ,private-nick
-		 :port 6697
-		 :nick ,private-nickserv-password)))
-
+;; leftover code from attempting to advise kmacro
 
