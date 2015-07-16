@@ -29,6 +29,15 @@
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
+(defmacro god-extension-set-mode (state)
+  "toggle god mode"
+  `(lambda ()
+    (interactive)
+    (setq god-global-mode ,state)
+    (if god-global-mode
+        (god-local-mode +1)
+      (god-local-mode -1))))
+
 (defmacro global-window-shortcut (key-string which-window)
   "create global shortcut C-c # for jumping to window #"
   `(global-set-key
@@ -109,7 +118,7 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-z") 'god-mode)
-(key-chord-define-global "df" 'god-mode)
+(key-chord-define-global "df" (god-extension-set-mode t))
 (global-set-key (kbd "C-;") 'other-window)
 (global-window-shortcut "C-c 1" 1)
 (global-window-shortcut "C-c 2" 2)
@@ -123,6 +132,7 @@
 (global-window-shortcut "C-c 0" 10)
 (global-set-key (kbd "C-c f") 'frameset-to-register)
 (global-set-key (kbd "C-c j") 'jump-to-register)
+(define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
 
 
 (key-chord-mode +1)
@@ -137,4 +147,5 @@
               (setq cursor-type 'box))))
 
 ;; leftover code from attempting to advise kmacro
+
 
