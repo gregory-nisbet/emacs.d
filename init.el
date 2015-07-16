@@ -1,12 +1,10 @@
 ;; modal emacs config
 ;; uses god-mode pervasively
-;; 
 
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (when (file-exists-p "~/.emacs.d/private.el")
     (require 'private))
-
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/") 
 			 ("org" . "http://orgmode.org/elpa/") 
@@ -134,6 +132,12 @@
 (global-set-key (kbd "C-c j") 'jump-to-register)
 (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
 
+;; map capital letters
+(define-key god-local-mode-map (kbd "O")
+  (lambda ()
+    (interactive)
+    (other-window 1)
+    (god-local-mode +1)))
 
 (key-chord-mode +1)
 (show-paren-mode +1)
@@ -147,5 +151,3 @@
               (setq cursor-type 'box))))
 
 ;; leftover code from attempting to advise kmacro
-
-
