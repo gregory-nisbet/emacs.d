@@ -4,7 +4,8 @@
 
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(require 'private)
+(when (file-exists-p "~/.emacs.d/private.el")
+    (require 'private))
 
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/") 
@@ -77,8 +78,6 @@
   (require-package 'magit)
   
   
-
-  
   (require 'magit)
   ;; (require 'circe)
   (require 'haskell)
@@ -87,11 +86,14 @@
   (require 'php-mode)
   (require 'dockerfile-mode) 
   (require 'markdown-mode)
-  (require 'tuareg))
+  (require 'tuareg)
 
-(when window-system
-  (load-optional-modes))
+  ;; use this symbol to quickly check if optional modes actually loaded
+  (setf DEBUG_LOADED_OPTIONAL t))
 
+;; this option is used to load optional stuff. included in the systemd service definition
+(setf load-optional (or (daemonp) window-system))
+(when load-optional (load-optional-modes))
 
 ;; replace some functions with more useful ones
 ;; some of these are taken from
