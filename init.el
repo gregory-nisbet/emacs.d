@@ -158,9 +158,3 @@
               (setq cursor-type 'box))))
 
 ;; leftover code from attempting to advise kmacro
-
-
-
-
-
-
