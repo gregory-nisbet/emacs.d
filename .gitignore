@@ -2,6 +2,8 @@ url/
 abbrev_defs
 auto-save-list/
 elpa/
+recentf
+recentf~
 private.el
 lisp/private.el
 *.elc

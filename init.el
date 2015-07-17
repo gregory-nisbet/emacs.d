@@ -27,6 +27,9 @@
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
 
+(recentf-mode +1)
+(setq recentf-max-menu-items 25)
+
 (defmacro god-extension-set-mode (state)
   "toggle god mode"
   `(lambda ()
