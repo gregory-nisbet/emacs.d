@@ -1,11 +1,10 @@
 ;; modal emacs config
 ;; uses god-mode pervasively
-;; 
 
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(require 'private)
-
+(when (file-exists-p "~/.emacs.d/private.el")
+    (require 'private))
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/") 
 			 ("org" . "http://orgmode.org/elpa/") 
@@ -27,6 +26,15 @@
 
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
+
+(defmacro god-extension-set-mode (state)
+  "toggle god mode"
+  `(lambda ()
+    (interactive)
+    (setq god-global-mode ,state)
+    (if god-global-mode
+        (god-local-mode +1)
+      (god-local-mode -1))))
 
 (defmacro global-window-shortcut (key-string which-window)
   "create global shortcut C-c # for jumping to window #"
@@ -77,8 +85,6 @@
   (require-package 'magit)
   
   
-
-  
   (require 'magit)
   ;; (require 'circe)
   (require 'haskell)
@@ -87,11 +93,14 @@
   (require 'php-mode)
   (require 'dockerfile-mode) 
   (require 'markdown-mode)
-  (require 'tuareg))
+  (require 'tuareg)
 
-(when window-system
-  (load-optional-modes))
+  ;; use this symbol to quickly check if optional modes actually loaded
+  (setf DEBUG_LOADED_OPTIONAL t))
 
+;; this option is used to load optional stuff. included in the systemd service definition
+(setf load-optional (or (daemonp) window-system))
+(when load-optional (load-optional-modes))
 
 ;; replace some functions with more useful ones
 ;; some of these are taken from
@@ -107,8 +116,10 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-z") 'god-mode)
-(key-chord-define-global "df" 'god-mode)
-; (global-set-key (kbd "C-;") 'other-window)
+;; (key-chord-define-global "df" 'god-mode)
+;; (global-set-key (kbd "C-;") 'other-window)
+(key-chord-define-global "df" (god-extension-set-mode t))
+;; (global-set-key (kbd "C-;") 'other-window)
 (global-window-shortcut "C-c 1" 1)
 (global-window-shortcut "C-c 2" 2)
 (global-window-shortcut "C-c 3" 3)
@@ -122,7 +133,14 @@
 (global-set-key (kbd "C-c t") 'transpose-chars)
 (global-set-key (kbd "C-c f") 'frameset-to-register)
 (global-set-key (kbd "C-c j") 'jump-to-register)
+(define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
 
+;; map capital letters
+(define-key god-local-mode-map (kbd "O")
+  (lambda ()
+    (interactive)
+    (other-window 1)
+    (god-local-mode +1)))
 
 (key-chord-mode +1)
 (show-paren-mode +1)
@@ -136,4 +154,3 @@
               (setq cursor-type 'box))))
 
 ;; leftover code from attempting to advise kmacro
-
