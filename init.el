@@ -137,7 +137,7 @@
 (global-set-key (kbd "C-c f") 'frameset-to-register)
 (global-set-key (kbd "C-c j") 'jump-to-register)
 (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
-define-key god-local-mode-map (kbd ",") leader-map)
+(define-key god-local-mode-map (kbd ",") leader-map)
 
 ;; map capital letters
 (define-key god-local-mode-map (kbd "O")
