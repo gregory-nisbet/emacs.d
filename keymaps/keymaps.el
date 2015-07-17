@@ -13,9 +13,9 @@
     (interactive)
     (window-number-select ,number))))
 
-(define-prefix-command 'space-map)
+(define-prefix-command 'leader-map)
 (let
-  ((current-keymap 'space-map))
+  ((current-keymap 'leader-map))
     (submap "f" 'file-map)
     (submap "w" 'window-map)
     (add-to-map "l" 'recenter-top-bottom)
@@ -25,9 +25,10 @@
     (add-to-map "i" 'apropos)
     (add-to-map "b" 'switch-to-buffer)
     (add-to-map "c" 'comment-dwim)
-    (add-to-map "u" 'evil-scroll-up)
+;;    (add-to-map "u" 'evil-scroll-up)
     (add-to-map "d" 'execute-extended-command)
     (add-to-map "a" 'ace-jump-mode)
+    (add-to-map " " 'set-mark-command)
 	;; keys 0-9 for keys
     (mapcar
      (lambda (i-num)

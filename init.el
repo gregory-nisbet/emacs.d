@@ -4,7 +4,7 @@
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (when (file-exists-p "~/.emacs.d/private.el")
-    (require 'private))
+  (require 'private))
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/") 
 			 ("org" . "http://orgmode.org/elpa/") 
@@ -62,6 +62,7 @@
 (add-to-list 'load-path "~/.emacs.d/god-mode/")
 (add-to-list 'load-path "~/.emacs.d/god-kmacro/")
 (add-to-list 'load-path "~/.emacs.d/window-number/")
+(add-to-list 'load-path "~/.emacs.d/keymaps/")
 
 (require 'god-mode)
 (require 'ace-jump-mode)
@@ -69,6 +70,7 @@
 (require 'window-number)
 (require 'recentf)
 (require 'god-kmacro)
+(require 'keymaps)
 
 (defalias 'lom 'load-optional-modes)
 (defun load-optional-modes ()
@@ -83,8 +85,7 @@
   (require-package 'tuareg)
   (require-package 'php-mode)
   (require-package 'magit)
-  
-  
+    
   (require 'magit)
   ;; (require 'circe)
   (require 'haskell)
@@ -116,6 +117,8 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-z") 'god-mode)
+(global-set-key (kbd "M-a") 'backward-paragraph)
+(global-set-key (kbd "M-e") 'forward-paragraph)
 ;; (key-chord-define-global "df" 'god-mode)
 ;; (global-set-key (kbd "C-;") 'other-window)
 (key-chord-define-global "df" (god-extension-set-mode t))
@@ -134,6 +137,7 @@
 (global-set-key (kbd "C-c f") 'frameset-to-register)
 (global-set-key (kbd "C-c j") 'jump-to-register)
 (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
+define-key god-local-mode-map (kbd ",") leader-map)
 
 ;; map capital letters
 (define-key god-local-mode-map (kbd "O")
@@ -154,3 +158,9 @@
               (setq cursor-type 'box))))
 
 ;; leftover code from attempting to advise kmacro
+
+
+
+
+
+
