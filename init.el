@@ -97,7 +97,7 @@
 ;; some of these are taken from
 ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
 (global-set-key (kbd "C-t") 'previous-line)
-(global-set-key (kbd "C-p") 'transpose-chars) 
+(global-set-key (kbd "C-p") 'other-window
 (global-set-key (kbd "C-l") 'hippie-expand)
 (global-set-key (kbd "C-c l") 'recenter-top-bottom)
 (global-set-key (kbd "C-c a") 'ace-jump-mode)
@@ -108,7 +108,7 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 (global-set-key (kbd "C-z") 'god-mode)
 (key-chord-define-global "df" 'god-mode)
-(global-set-key (kbd "C-;") 'other-window)
+; (global-set-key (kbd "C-;") 'other-window)
 (global-window-shortcut "C-c 1" 1)
 (global-window-shortcut "C-c 2" 2)
 (global-window-shortcut "C-c 3" 3)
@@ -119,6 +119,7 @@
 (global-window-shortcut "C-c 8" 8)
 (global-window-shortcut "C-c 9" 9)
 (global-window-shortcut "C-c 0" 10)
+(global-set-key (kbd "C-c t") 'transpose-chars)
 (global-set-key (kbd "C-c f") 'frameset-to-register)
 (global-set-key (kbd "C-c j") 'jump-to-register)
 
