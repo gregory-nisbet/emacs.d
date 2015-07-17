@@ -106,7 +106,7 @@
 ;; some of these are taken from
 ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
 (global-set-key (kbd "C-t") 'previous-line)
-(global-set-key (kbd "C-p") 'other-window
+(global-set-key (kbd "C-p") 'other-window)
 (global-set-key (kbd "C-l") 'hippie-expand)
 (global-set-key (kbd "C-c l") 'recenter-top-bottom)
 (global-set-key (kbd "C-c a") 'ace-jump-mode)
