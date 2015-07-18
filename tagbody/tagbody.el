@@ -30,7 +30,8 @@
 
 ;;; Code:
 
-(require 'cl)
+;;; update package so it uses cl-lib rather than cl
+(require 'cl-lib)
 
 (defmacro tagbody (&rest expressions)
   "Evaluate EXPRESSIONS and return nil, allowing tags and `go's.
@@ -55,7 +56,7 @@ or the CL package."
         (blocks (gensym))       ; list of lambda functions
         (current (gensym))
         the-taglist the-blocks) ; future values of the gensyms
-    (loop for counter from 1
+    (cl-loop for counter from 1
           for rest = (member-if
                       #'(lambda (x) (or (symbolp x) (integerp x)))
                       expressions)
@@ -81,7 +82,7 @@ or the CL package."
            ;; start next time.
            (,current 0))
        ;; Repeat until execution falls off the end.
-       (loop
+       (cl-loop
         (setq ,current
               ;; Catch the tag to which to transfer
               ;; execution and find its associated block.
@@ -106,7 +107,7 @@ Causes execution to jump to the statement immediately following TAG in
 a current `tagbody' form, searching outwards and signalling an error
 if no such tag is found.  TAG is not evaluated and should be a symbol
 or an integer.  See `tagbody'."
-  (assert (or (symbolp tag) (integerp tag)) nil
+  (cl-assert (or (symbolp tag) (integerp tag)) nil
           "Invalid tag in `go': symbols and integers only")
   `(throw 'tagbody-go ',tag))
 
@@ -115,7 +116,7 @@ or an integer.  See `tagbody'."
 Causes execution to jump to the statement immediately following TAG in
 a current `tagbody' form, searching outwards and signalling an error
 if no such tag is found.  TAG should be a symbol or an integer."
-  (assert (or (symbolp tag) (numberp tag)) nil
+  (cl-assert (or (symbolp tag) (numberp tag)) nil
           "Invalid tag in `go*': symbols and integers only")
   (throw 'tagbody-go tag))
 

@@ -66,6 +66,8 @@
 (add-to-list 'load-path "~/.emacs.d/god-kmacro/")
 (add-to-list 'load-path "~/.emacs.d/window-number/")
 (add-to-list 'load-path "~/.emacs.d/keymaps/")
+(add-to-list 'load-path "~/.emacs.d/tagbody/")
+(add-to-list 'load-path "~/.emacs.d/coroutine/")
 
 (require 'god-mode)
 (require 'ace-jump-mode)
@@ -74,6 +76,8 @@
 (require 'recentf)
 (require 'god-kmacro)
 (require 'keymaps)
+; tagbody is a dependency of coroutine
+; (require 'coroutine)
 
 (defalias 'lom 'load-optional-modes)
 (defun load-optional-modes ()
@@ -104,7 +108,7 @@
 
 ;; this option is used to load optional stuff. included in the systemd service definition
 (setf load-optional (or (daemonp) window-system))
-(when load-optional (load-optional-modes))
+(when t (load-optional-modes))
 
 ;; replace some functions with more useful ones
 ;; some of these are taken from
@@ -166,3 +170,5 @@
               (setq cursor-type 'box))))
 
 ;; leftover code from attempting to advise kmacro
+
+
