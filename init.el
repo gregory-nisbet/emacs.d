@@ -142,8 +142,8 @@
 (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
 (define-key god-local-mode-map (kbd ",") leader-map)
 (define-key dired-mode-map (kbd "t") 'dired-previous-line)
-(define-key dired-mode-map (kbd "C-t") 'dired-previous-line)
-(define-key dired-mode-map (kbd "C-c C-t") 'dired-toggle-marks)
+(define-key dired-mode-map (kbd "C-c C-t") 'dired-previous-line)
+(define-key dired-mode-map (kbd "C-c C-d") 'dired-toggle-marks)
 (define-key dired-mode-map (kbd "C-c C-c") 'image-dired-map)
 (define-key dired-mode-map (kbd "b") 'dired-up-directory)
   
