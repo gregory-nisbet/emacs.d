@@ -13,6 +13,22 @@
     (interactive)
     (window-number-select ,number))))
 
+(define-prefix-command 'image-dired-map)
+(let
+    ((current-keymap 'image-dired-map))
+     (add-to-map "C-t" 'image-dired-dired-toggle-marked-thumbs)
+     (add-to-map "." 'image-dired-display-thumb)
+     (add-to-map "a" 'image-dired-display-thumbs-append)
+     (add-to-map "c" 'image-dired-dired-comment-files)
+     (add-to-map "d" 'image-dired-display-thumbs)
+     (add-to-map "e" 'image-dired-dired-edit-comment-and-tags)
+     (add-to-map "f" 'image-dired-mark-tagged-files)
+     (add-to-map "i" 'image-dired-dired-display-image)
+     (add-to-map "j" 'image-dired-jump-thumbnail-buffer)
+     (add-to-map "r" 'image-dired-delete-tag)
+     (add-to-map "t" 'image-dired-tag-files)
+     (add-to-map "x" 'image-dired-dired-display-external))
+
 (define-prefix-command 'leader-map)
 (let
   ((current-keymap 'leader-map))

@@ -19,7 +19,7 @@
 (setq disabled-command-function nil)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
-;; http://ergoemacs.org/emacs/emacs_alias.html
+; http://ergoemacs.org/emacs/emacs_alias.html
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'list-buffers 'ibuffer)
 (defalias 'perl-mode 'cperl-mode)
@@ -141,7 +141,12 @@
 (global-set-key (kbd "C-c j") 'jump-to-register)
 (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
 (define-key god-local-mode-map (kbd ",") leader-map)
-
+(define-key dired-mode-map (kbd "t") 'dired-previous-line)
+(define-key dired-mode-map (kbd "C-t") 'dired-previous-line)
+(define-key dired-mode-map (kbd "C-c C-t") 'dired-toggle-marks)
+(define-key dired-mode-map (kbd "C-c C-c") 'image-dired-map)
+(define-key dired-mode-map (kbd "b") 'dired-up-directory)
+  
 ;; map capital letters
 (define-key god-local-mode-map (kbd "O")
   (lambda ()
