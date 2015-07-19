@@ -24,26 +24,6 @@
 (defalias 'list-buffers 'ibuffer)
 (defalias 'perl-mode 'cperl-mode)
 
-(autoload 'zap-up-to-char "misc"
-  "Kill up to, but not including ARGth occurrence of CHAR.")
-
-(defmacro god-extension-set-mode (state)
-  "toggle god mode"
-  `(lambda ()
-    (interactive)
-    (setq god-global-mode ,state)
-    (if god-global-mode
-        (god-local-mode +1)
-      (god-local-mode -1))))
-
-(defmacro global-window-shortcut (key-string which-window)
-  "create global shortcut C-c # for jumping to window #"
-  `(global-set-key
-    (kbd ,key-string)
-    (lambda ()
-      (interactive)
-      (window-number-select ,which-window))))
-
 (defun require-package (package)
   "install package from source"
   (setq-default highlight-tabs t)
@@ -53,9 +33,24 @@
       (package-refresh-contents)) 
     (package-install package)))
 
+(defun evil-all-modes (keybinding command)
+  "add a keybinding to evil-mode in normal, insert, and operator states"
+  (define-key evil-insert-state-map (kbd keybinding) command)
+  (define-key evil-normal-state-map (kbd keybinding) command)
+  (define-key evil-operator-state-map (kbd keybinding) command))
+
 (require-package 'ace-jump-mode)
 (require-package 'paredit)
 (require-package 'key-chord)
+(require-package 'evil)
+(require-package 'haskell-mode)
+(require-package 'eww)
+(require-package 'web-mode)
+(require-package 'dockerfile-mode)
+(require-package 'markdown-mode)
+(require-package 'tuareg)
+(require-package 'php-mode)
+(require-package 'magit)
 
 ;; (require-package 'circe)                
   
@@ -69,68 +64,55 @@
 (require 'window-number)
 (require 'recentf)
 (require 'god-kmacro)
-
-(defalias 'lom 'load-optional-modes)
-(defun load-optional-modes ()
-    "load non mandatory modes, keep start time down"
-  (interactive)
-
-  (require-package 'haskell-mode)
-  (require-package 'eww)
-  (require-package 'web-mode)
-  (require-package 'dockerfile-mode)
-  (require-package 'markdown-mode)
-  (require-package 'tuareg)
-  (require-package 'php-mode)
-  (require-package 'magit)
-  
-  
-  (require 'magit)
-  ;; (require 'circe)
-  (require 'haskell)
-  (require 'eww)
-  (require 'web-mode)
-  (require 'php-mode)
-  (require 'dockerfile-mode) 
-  (require 'markdown-mode)
-  (require 'tuareg)
-
-  ;; use this symbol to quickly check if optional modes actually loaded
-  (setf DEBUG_LOADED_OPTIONAL t))
+(require 'evil)
+(require 'magit)
+;; (require 'circe)
+(require 'haskell)
+(require 'eww)
+(require 'web-mode)
+(require 'php-mode)
+(require 'dockerfile-mode) 
+(require 'markdown-mode)
+(require 'tuareg)
 
 ;; this option is used to load optional stuff. included in the systemd service definition
-(setf load-optional (or (daemonp) window-system))
-(when load-optional (load-optional-modes))
+
 
 ;; replace some functions with more useful ones
 ;; some of these are taken from
 ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
-(global-set-key (kbd "C-t") 'previous-line)
-(global-set-key (kbd "C-p") 'transpose-chars) 
-(global-set-key (kbd "C-l") 'hippie-expand)
-(global-set-key (kbd "C-c l") 'recenter-top-bottom)
-(global-set-key (kbd "C-c a") 'ace-jump-mode)
-(global-set-key (kbd "M-z") 'zap-up-to-char)
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
-(global-set-key (kbd "C-z") 'god-mode)
-(key-chord-define-global "df" (god-extension-set-mode t))
-(global-set-key (kbd "C-;") 'other-window)
-(global-window-shortcut "C-c 1" 1)
-(global-window-shortcut "C-c 2" 2)
-(global-window-shortcut "C-c 3" 3)
-(global-window-shortcut "C-c 4" 4)
-(global-window-shortcut "C-c 5" 5)
-(global-window-shortcut "C-c 6" 6)
-(global-window-shortcut "C-c 7" 7)
-(global-window-shortcut "C-c 8" 8)
-(global-window-shortcut "C-c 9" 9)
-(global-window-shortcut "C-c 0" 10)
-(global-set-key (kbd "C-c f") 'frameset-to-register)
-(global-set-key (kbd "C-c j") 'jump-to-register)
-(define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
+;; (global-set-key (kbd "C-t") 'previous-line)
+;; (global-set-key (kbd "C-p") 'transpose-chars) 
+;; (global-set-key (kbd "C-l") 'hippie-expand)
+;; (global-set-key (kbd "C-c l") 'recenter-top-bottom)
+;; (global-set-key (kbd "C-c a") 'ace-jump-mode)
+;; (global-set-key (kbd "M-z") 'zap-up-to-char)
+;; (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+;; (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+;; (global-set-key (kbd "C-M-s") 'isearch-forward)
+;; (global-set-key (kbd "C-M-r") 'isearch-backward)
+;; (global-set-key (kbd "C-z") 'god-mode)
+;; (key-chord-define-global "df" (god-extension-set-mode t))
+;; (global-set-key (kbd "C-;") 'other-window)
+;; (global-window-shortcut "C-c 1" 1)
+;; (global-window-shortcut "C-c 2" 2)
+;; (global-window-shortcut "C-c 3" 3)
+;; (global-window-shortcut "C-c 4" 4)
+;; (global-window-shortcut "C-c 5" 5)
+;; (global-window-shortcut "C-c 6" 6)
+;; (global-window-shortcut "C-c 7" 7)
+;; (global-window-shortcut "C-c 8" 8)
+;; (global-window-shortcut "C-c 9" 9)
+;; (global-window-shortcut "C-c 0" 10)
+;; (global-set-key (kbd "C-c f") 'frameset-to-register)
+;; (global-set-key (kbd "C-c j") 'jump-to-register)
+;; (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
+
+(evil-all-modes "C-a" 'move-beginning-of-line)
+(evil-all-modes "C-e" 'move-end-of-line)
+(evil-all-modes "C-y" 'move-end-of-line)
+(evil-all-modes "C-k" 'evil-normal)
+(evil-all-modes "C-l" 'hippie-expand)
 
 ;; map capital letters
 (define-key god-local-mode-map (kbd "O")
@@ -141,6 +123,7 @@
 
 (key-chord-mode +1)
 (show-paren-mode +1)
+(evil-mode +1)
 
 ;; make god mode distinguishable without reading the
 ;; modeline
