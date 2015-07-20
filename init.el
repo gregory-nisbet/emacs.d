@@ -110,9 +110,11 @@
 
 (evil-all-modes "C-a" 'move-beginning-of-line)
 (evil-all-modes "C-e" 'move-end-of-line)
-(evil-all-modes "C-y" 'move-end-of-line)
-(evil-all-modes "C-k" 'evil-normal)
+(evil-all-modes "C-y" 'yank)
+(evil-all-modes "C-k" 'evil-normal-state)
 (evil-all-modes "C-l" 'hippie-expand)
+
+
 
 ;; map capital letters
 (define-key god-local-mode-map (kbd "O")
