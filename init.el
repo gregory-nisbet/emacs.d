@@ -108,6 +108,7 @@
 ;; (global-set-key (kbd "C-c j") 'jump-to-register)
 ;; (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
 
+(key-chord-define-global "df" (god-extension-set-mode t))
 (evil-all-modes "C-a" 'move-beginning-of-line)
 (evil-all-modes "C-e" 'move-end-of-line)
 (evil-all-modes "C-y" 'yank)
