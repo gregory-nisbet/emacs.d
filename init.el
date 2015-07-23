@@ -1,5 +1,7 @@
 ;; modal emacs config
 ;; uses god-mode pervasively
+;; remapping ctl-p to ctl-t is just not practical
+
 
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
@@ -113,8 +115,8 @@
 ;; replace some functions with more useful ones
 ;; some of these are taken from
 ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
-(global-set-key (kbd "C-t") 'previous-line)
-(global-set-key (kbd "C-p") 'other-window)
+;; (global-set-key (kbd "C-t") 'previous-line)
+;;(global-set-key (kbd "C-p") 'other-window)
 (global-set-key (kbd "C-l") 'hippie-expand)
 (global-set-key (kbd "C-c l") 'recenter-top-bottom)
 (global-set-key (kbd "C-c a") 'ace-jump-mode)
@@ -140,12 +142,12 @@
 (global-window-shortcut "C-c 8" 8)
 (global-window-shortcut "C-c 9" 9)
 (global-window-shortcut "C-c 0" 10)
-(global-set-key (kbd "C-c t") 'transpose-chars)
+;; (global-set-key (kbd "C-c t") 'transpose-chars)
 (global-set-key (kbd "C-c f") 'frameset-to-register)
 (global-set-key (kbd "C-c j") 'jump-to-register)
 (define-key god-local-mode-map (kbd "i") (god-extension-set-mode nil))
 (define-key god-local-mode-map (kbd ",") leader-map)
-(define-key dired-mode-map (kbd "t") 'dired-previous-line)
+;; (define-key dired-mode-map (kbd "t") 'dired-previous-line)
 (define-key dired-mode-map (kbd "C-c C-t") 'dired-previous-line)
 (define-key dired-mode-map (kbd "C-c C-d") 'dired-toggle-marks)
 (define-key dired-mode-map (kbd "C-c C-c") 'image-dired-map)
@@ -166,8 +168,8 @@
 (add-hook 'god-local-mode-hook
           (lambda ()
             (if god-local-mode
-                (setq cursor-type 'bar)
-              (setq cursor-type 'box))))
+                (setq cursor-type 'box)
+              (setq cursor-type 'bar))))
 
 ;; leftover code from attempting to advise kmacro
 
