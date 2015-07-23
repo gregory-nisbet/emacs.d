@@ -2,6 +2,7 @@
 ;; uses god-mode pervasively
 ;; remapping ctl-p to ctl-t is just not practical
 
+
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (when (file-exists-p "~/.emacs.d/private.el")
