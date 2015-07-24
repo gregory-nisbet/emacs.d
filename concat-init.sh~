@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+cat init.el > init-onefile.el
+
