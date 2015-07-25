@@ -39,7 +39,7 @@
 (require-package 'circe)
 (require-package 'haskell-mode)
 
-(add-to-list 'load-path "~/Workspace/projects/emacs.d/list/")
+(add-to-list 'load-path "~/Workspace/projects/emacs.d/lisp/")
 
 (require 'god-mode)
 (require 'evil)

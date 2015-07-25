@@ -64,12 +64,14 @@
 
 ;; (require-package 'circe)                
   
-(add-to-list 'load-path "~/.emacs.d/god-mode/")
-(add-to-list 'load-path "~/.emacs.d/god-kmacro/")
-(add-to-list 'load-path "~/.emacs.d/window-number/")
-(add-to-list 'load-path "~/.emacs.d/keymaps/")
-(add-to-list 'load-path "~/.emacs.d/tagbody/")
-(add-to-list 'load-path "~/.emacs.d/coroutine/")
+;; (add-to-list 'load-path "~/.emacs.d/god-mode/")
+;; (add-to-list 'load-path "~/.emacs.d/god-kmacro/")
+;; (add-to-list 'load-path "~/.emacs.d/window-number/")
+;; (add-to-list 'load-path "~/.emacs.d/keymaps/")
+;; (add-to-list 'load-path "~/.emacs.d/tagbody/")
+;; (add-to-list 'load-path "~/.emacs.d/coroutine/")
+
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 (require 'god-mode)
 (require 'ace-jump-mode)
