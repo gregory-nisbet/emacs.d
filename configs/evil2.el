@@ -41,7 +41,7 @@
 (require-package 'circe)
 (require-package 'haskell-mode)
 
-(add-to-list 'load-path "~/Workspace/projects/emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/lisp/") 
 
 (require 'god-mode)
 (require 'evil)
@@ -65,4 +65,16 @@
 (evil-mode +1)
 
 ;; evil mode add keys and stuff
+(global-set-key (kbd "C-l") 'hippie-expand)
+(global-set-key (kbd "C-c l") 'recenter-top-bottom)
+(global-set-key (kbd "C-c a") 'ace-jump-mode)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+(global-set-key (kbd "M-a") 'backward-paragraph)
+(global-set-key (kbd "M-e") 'forward-paragraph)
 
+(define-key evil-insert-state-map (kbd " ") isearch-forward-regexp)
+(define-key evil-insert-state-map (kbd "C-SPC") isearch-backward-regexp)
