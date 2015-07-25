@@ -1,4 +1,6 @@
 ;; -*- lexical-binding: t -*-
+;; more expansive evil mode designed to mimic the current vim setup.
+
 ;; evil mode with no mandatory key chords. ^K is normal mode too.
 ;; long-term most of this file will be devoted to the leader keymap.
 ;; it'll be similar to spacemacs, but hopefully easier to keep track of and w/o the branding.
@@ -39,7 +41,7 @@
 (require-package 'circe)
 (require-package 'haskell-mode)
 
-(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path "~/Workspace/projects/emacs.d/lisp/")
 
 (require 'god-mode)
 (require 'evil)
@@ -61,3 +63,6 @@
 (setq recentf-max-menu-items 25)
 
 (evil-mode +1)
+
+;; evil mode add keys and stuff
+
