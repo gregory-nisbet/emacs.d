@@ -21,3 +21,4 @@
     (call-interactively 'auto-complete)
     (call-interactively 'autocomplete-buffer-with-helm-auto)))
 
+(provide 'autocomplete-buffer)
