@@ -9,10 +9,35 @@ use autodie;
 
 # find possible config files.
 my @paths;
-sub wanted {
+sub collect_paths {
     # return if we're in the configs directory.
     $_ eq '.' and return;
     push @paths, $File::Find::name;
+}
+
+sub inode {
+    my ($path) = @_;
+    my @stats = stat $path;
+    return $stats[1];
+}
+
+sub sha_256 {
+    my ($path) = @_;
+    return digest_file_hex($path, "SHA-256");
+}
+
+# is the init file unique by the given criterion? e.g. inode, hash of file contents
+# uniqueness criterion must be a string
+sub backed_up {
+    @_ == 2 or die;
+    my ($fun_r, $paths_r) = @_;
+    my @paths = @$paths_r;
+    # if the file doesn't exist, it is backed up
+    return 1 unless (-e "init.el");
+    my $init = $fun_r->("init.el");
+    # keep track of config values
+    my %config = map { (scalar $fun_r->($_)), 1 } @paths;
+    return exists $config{$init};
 }
 
 # only takes path to config
@@ -25,20 +50,12 @@ if ($config =~ /^configs\/(.*)$/) {
 }
 -e "configs/$config" or die 'file does not exist';
 
-# digest of current config to compare with other configs
-my $current_digest;
-(-e "init.el") and digest_file_hex("init.el", "SHA-256");
 # search directory for config files.
-find(\&wanted, 'configs');
+find(\&collect_paths, 'configs');
 
-my %hash_code = map {digest_file_hex($_, "SHA-256") => 1} @paths;
+my $backed_up = backed_up(\&inode, \@paths) or backed_up(\&sha_256, \@paths);
 
-do { 
-    no warnings qw[uninitialized];
-    if (defined $current_digest) {
-        $hash_code{$current_digest} or die "cowardly refusing to overwrite config without backup";
-    }
-};
+die "file not backed up, cowardly refusing to proceed" unless $backed_up;
 
 if (-e "init.el") {
     unlink "init.el" or die "failed to unlink file";
