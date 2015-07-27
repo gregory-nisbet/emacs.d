@@ -1,0 +1,12 @@
+Warning (initialization): An error occurred while loading `/Users/gregory.nisbet/.emacs.d/init.el':
+
+error: Need package `helm-20130328', but only 1.7.5 is available
+
+To ensure normal operation, you should investigate and remove the
+cause of the error in your initialization file.  Start Emacs with
+the `--debug-init' option to view a complete error backtrace.
+
+===
+
+this error perhaps taken care of by forking the ac-helm repo.
+still unable to verify whether we are really getting asynch behavior.
