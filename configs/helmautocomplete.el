@@ -38,8 +38,10 @@
 (require 'autocomplete-buffer)
 
 ;; enable autocomplete mode everywhere!
-(auto-complete-mode +1)
-(global-auto-complete-mode t)
+;; (auto-complete-mode +1)
+;; (global-auto-complete-mode t)
 ;; I have literally no idea what this does. I think it runs autocompletion
 ;; asynchronously with helm all the time. perhaps not
-(autocomplete-buffer-with-helm-auto)
+(global-set-key (kbd "C-c c") 'autocomplete-buffer-with-helm)
+
+
