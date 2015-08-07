@@ -2,7 +2,7 @@
 (require 'ac-helm)
 (require 'auto-complete-config)
 (ac-config-default)
-(defun autocomplete-buffer-with-helm-auto
+(defun autocomplete-buffer-with-helm-auto ()
     "select autocomplete candidates by helm. Useful to narrow candidates"
   (interactive)
   (let ((c (ac-candidates)))
