@@ -151,7 +151,7 @@
 ;; (global-set-key (kbd "C-c t") 'transpose-chars)
 (global-set-key (kbd "C-c f") 'frameset-to-register)
 (global-set-key (kbd "C-c j") 'jump-to-register)
-(global-set-key (kbd "C-c h") 'help-map)
+(global-set-key (kbd "C-c h") (lookup-key global-map (kbd "<f1>")))
 (define-key god-local-mode-map (kbd "i") (god-extension-set-mode "disable god mode" nil))
 (define-key god-local-mode-map (kbd ",") leader-map)
 ;; (define-key dired-mode-map (kbd "t") 'dired-previous-line)
