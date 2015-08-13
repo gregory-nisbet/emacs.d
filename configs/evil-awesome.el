@@ -2,6 +2,22 @@
 ;; use ctrl-H to enter god-mode
 ;; use C-c n to enter normal-mode.
 
+(defun require-package (package)
+  "install package from source"
+  (setq-default highlight-tabs t)
+  "Install given PACKAGE." 
+  (unless (package-installed-p package) 
+    (unless (assoc package package-archive-contents) 
+      (package-refresh-contents)) 
+    (package-install package)))
+
+(defmacro global-window-shortcut (key-string which-window)
+  "create global shortcut C-c # for jumping to window #"
+  `(global-set-key
+    (kbd ,key-string)
+    (lambda ()
+      (interactive)
+      (window-number-select ,which-window))))
 
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
@@ -32,41 +48,39 @@
 (recentf-mode +1)
 (setq recentf-max-menu-items 25)
 
-
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (require 'ace-jump-mode)
 (require 'paredit)
 (require 'window-number)
 (require 'recentf)
-(require 'god-kmacro)
 (require 'keymaps)
 (require 'evil)
 ; tagbody is a dependency of coroutine
 ; (require 'coroutine)
 
 
-  (require-package 'haskell-mode)
-  (require-package 'eww)
-  (require-package 'web-mode)
-  (require-package 'dockerfile-mode)
-  (require-package 'markdown-mode)
-  (require-package 'tuareg)
-  (require-package 'php-mode)
-  (require-package 'magit)
-    
-  (require 'magit)
-  ;; (require 'circe)
-  (require 'haskell)
-  (require 'eww)
-  (require 'web-mode)
-  (require 'php-mode)
-  (require 'dockerfile-mode) 
-  (require 'markdown-mode)
-  (require 'tuareg)
+(require-package 'haskell-mode)
+(require-package 'eww)
+(require-package 'web-mode)
+(require-package 'dockerfile-mode)
+(require-package 'markdown-mode)
+(require-package 'tuareg)
+(require-package 'php-mode)
+(require-package 'magit)
+  
+(require 'magit)
+;; (require 'circe)
+(require 'haskell)
+(require 'eww)
+(require 'web-mode)
+(require 'php-mode)
+(require 'dockerfile-mode) 
+(require 'markdown-mode)
+(require 'tuareg)
 
-  ;; use this symbol to quickly check if optional modes actually loaded
-  (setf DEBUG_LOADED_OPTIONAL t)
+;; use this symbol to quickly check if optional modes actually loaded
+(setf DEBUG_LOADED_OPTIONAL t)
 
 
 ;; replace some functions with more useful ones
