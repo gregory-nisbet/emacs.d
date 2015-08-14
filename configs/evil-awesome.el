@@ -154,6 +154,8 @@
 ;; C-a is an abomination before the lord.
 (define-key evil-normal-state-map (kbd "C-a") 'undo-tree-redo)
 (define-key evil-insert-state-map (kbd "C-a") 'evil-paste-from-register)
+(define-key evil-insert-state-map (kbd "C-n") 'hippie-expand)
+(define-key evil-insert-state-map (kbd "C-p") 'dabbrev-expand)
 
 ;; make netoree mode and dired more emacsey.
 (evil-set-initial-state 'neotree-mode 'emacs)
