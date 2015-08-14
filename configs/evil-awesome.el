@@ -1,7 +1,11 @@
 ;; evil-mode and god-mode
-;; use ctrl-H to enter god-mode
-;; use C-c n to enter normal-mode.
-
+;; so I don't actually have both evil and god-mode yet.
+;; the eventual goal here is to move all evil functionality that
+;; requires a modifier key to somewhere else so all the modifier
+;; key combinations can be non-modal
+;; that way switching between evil and god-mode just changes the meaning of
+;; alphabetic keys.
+;; either that or I'll just try to make the vim config consistent enough to be useful.
 (defun require-package (package)
   "install package from source"
   (setq-default highlight-tabs t)
