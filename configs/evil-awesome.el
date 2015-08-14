@@ -19,6 +19,22 @@
       (interactive)
       (window-number-select ,which-window))))
 
+(defun add-to-map (key cmd)
+  "add a command to a keymap"
+  (cl-assert (stringp key))
+  (cl-assert (commandp cmd))
+  (define-key current-keymap (kbd key) cmd))
+(defun add-to-map-and-ctl (key cmd)
+  "add a command to a keymap, and the ctl version too"
+  (cl-assert (stringp key))
+  (cl-assert (commandp cmd))
+  (define-key current-keymap (kbd key) cmd)
+  (define-key current-keymap (kbd (format "C-%s" key)) cmd))
+(defun submap (key cmd)
+  "add a submap to a keymap"
+  (cl-assert (stringp key)) 
+  (define-key current-keymap (kbd key) cmd))
+
 (require 'cl-lib)
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (when (file-exists-p "~/.emacs.d/private.el")
@@ -35,7 +51,9 @@
 (setq tab-width 4)
 (setq-default indent-tabs-mode nil)
 (setq disabled-command-function nil)
+
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
 
 ; http://ergoemacs.org/emacs/emacs_alias.html
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -54,7 +72,6 @@
 (require 'paredit)
 (require 'window-number)
 (require 'recentf)
-(require 'keymaps)
 (require 'evil)
 ; tagbody is a dependency of coroutine
 ; (require 'coroutine)
@@ -68,6 +85,7 @@
 (require-package 'tuareg)
 (require-package 'php-mode)
 (require-package 'magit)
+(require-package 'projectile)
   
 (require 'magit)
 ;; (require 'circe)
@@ -78,6 +96,7 @@
 (require 'dockerfile-mode) 
 (require 'markdown-mode)
 (require 'tuareg)
+(require 'projectile)
 
 ;; use this symbol to quickly check if optional modes actually loaded
 (setf DEBUG_LOADED_OPTIONAL t)
@@ -124,6 +143,34 @@
 (define-key dired-mode-map (kbd "C-c C-d") 'dired-toggle-marks)
 (define-key dired-mode-map (kbd "C-c C-c") 'image-dired-map)
 (define-key dired-mode-map (kbd "b") 'dired-up-directory)
+
+(define-key evil-normal-state-map "," 'leader-map)
+
+;; remove ctrl-r from evil-mode map to make it reverse isearch regexp
+;; because that is super useful
+;; think about another key to elevate to paste from register.
+(define-key evil-normal-state-map (kbd "C-r") nil)
+(define-key evil-insert-state-map (kbd "C-r") nil)
+
+;; C-a is an abomination before the lord.
+(define-key evil-normal-state-map (kbd "C-a") 'undo-tree-redo)
+(define-key evil-insert-state-map (kbd "C-a") 'evil-paste-from-register)
+
+(evil-set-initial-state 'neotree-mode 'emacs) 
+
+
+;; leader keys
+(define-prefix-command 'leader-map)
+(let 
+  ((current-keymap 'leader-map))
+  (add-to-map "o" 'ibuffer)
+  (add-to-map "qa" 'save-buffers-kill-terminal)
+  (add-to-map "w" 'save-buffer)
+  (add-to-map "n" 'neotree)
+  (add-to-map "s" 'isearch-repeat-forward)
+  (add-to-map "r" 'isearch-repeat-backward)
+  (add-to-map "a" 'move-beginning-of-line)
+  (add-to-map "e" 'move-end-of-line))
 
 (evil-mode +1)
 
