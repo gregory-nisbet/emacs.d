@@ -101,7 +101,6 @@
 ;; use this symbol to quickly check if optional modes actually loaded
 (setf DEBUG_LOADED_OPTIONAL t)
 
-
 ;; replace some functions with more useful ones
 ;; some of these are taken from
 ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
@@ -156,7 +155,9 @@
 (define-key evil-normal-state-map (kbd "C-a") 'undo-tree-redo)
 (define-key evil-insert-state-map (kbd "C-a") 'evil-paste-from-register)
 
+;; make netoree mode and dired more emacsey.
 (evil-set-initial-state 'neotree-mode 'emacs)
+(evil-set-initial-state 'dired-mode 'emacs)
 (add-hook 'neotree-mode-hook 'vimify-neotree)
 
 (defun vimify-neotree ()
