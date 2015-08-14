@@ -156,8 +156,17 @@
 (define-key evil-normal-state-map (kbd "C-a") 'undo-tree-redo)
 (define-key evil-insert-state-map (kbd "C-a") 'evil-paste-from-register)
 
-(evil-set-initial-state 'neotree-mode 'emacs) 
+(evil-set-initial-state 'neotree-mode 'emacs)
+(add-hook 'neotree-mode-hook 'vimify-neotree)
 
+(defun vimify-neotree ()
+  "make neotree follow vim keybindings more closely"
+  (define-key neotree-mode-map "j" 'next-line)
+  (define-key neotree-mode-map "k" 'previous-line)
+  (define-key neotree-mode-map "t" 'neotree-refresh)
+  (define-key neotree-mode-map "g" nil)
+  (define-key neotree-mode-map (kbd "gg") 'beginning-of-buffer)
+  (define-key neotree-mode-map "G" 'end-of-buffer))
 
 ;; leader keys
 (define-prefix-command 'leader-map)
