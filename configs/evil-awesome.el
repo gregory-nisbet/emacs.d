@@ -101,6 +101,7 @@
 (require 'markdown-mode)
 (require 'tuareg)
 (require 'projectile)
+(load-theme 'tango-dark)
 
 ;; use this symbol to quickly check if optional modes actually loaded
 (setf DEBUG_LOADED_OPTIONAL t)
@@ -148,14 +149,21 @@
 (define-key dired-mode-map (kbd "b") 'dired-up-directory)
 
 (define-key evil-normal-state-map "," 'leader-map)
-
 ;; remove ctrl-r from evil-mode map to make it reverse isearch regexp
 ;; because that is super useful
 ;; think about another key to elevate to paste from register.
 (define-key evil-normal-state-map (kbd "C-r") nil)
 (define-key evil-insert-state-map (kbd "C-r") nil)
+;; no evil-scroll-down
+;; (define-key evil-normal-mode-map (kbd "C-d") nil) 
+;; no evil-scroll-line-up
+;; (define-key evil-normal-mode-map (kbd "C-y") nil)
+;; no evil-scroll-line-down 
+;; (define-key evil-normal-mode-map (kbd "C-e") nil)
+;; no evil-jump-backward
+;; (define-key evil-normal-mode-map (kbd "C-o") nil)
 
-;; C-a is an abomination before the lord.
+;; c-a is an abomination before the lord.
 (define-key evil-normal-state-map (kbd "C-a") 'undo-tree-redo)
 (define-key evil-insert-state-map (kbd "C-a") 'evil-paste-from-register)
 (define-key evil-insert-state-map (kbd "C-n") 'hippie-expand)
@@ -186,7 +194,11 @@
   (add-to-map "s" 'isearch-repeat-forward)
   (add-to-map "r" 'isearch-repeat-backward)
   (add-to-map "a" 'move-beginning-of-line)
-  (add-to-map "e" 'move-end-of-line))
+  (add-to-map "e" 'move-end-of-line)
+  (add-to-map "v" 'evil-visual-block)
+  (add-to-map "y" 'undo-tree-redo)
+  (add-to-map "f" 'frameset-to-register)
+  (add-to-map "j" 'jump-to-register))
 
 (evil-mode +1)
 
