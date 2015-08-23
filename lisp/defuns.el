@@ -44,7 +44,25 @@
   (cl-assert (stringp key)) 
   (define-key current-keymap (kbd key) cmd))
 
-(defalias 'lom 'load-optional-modes)
+(defun load-modes ()
+  "require generally used modes"
+
+
+  (require-package 'ace-jump-mode)
+  (require-package 'paredit)
+  (require-package 'evil)
+  (require-package 'php-mode)
+  (require-package 'ace-jump-mode)
+
+  (require 'god-mode)
+  (require 'ace-jump-mode)
+  (require 'paredit)
+  (require 'window-number)
+  (require 'recentf)
+  (require 'god-kmacro)
+  (require 'keymaps)
+  )
+
 (defun load-optional-modes ()
   "load non mandatory modes, keep start time down"
   (interactive)
@@ -93,7 +111,7 @@
   (global-set-key (kbd "M-e") 'forward-paragraph))
 
 (defun window-shortcuts ()
-  "set global windows"
+  "set global window shortcuts in C-c map"
   (global-window-shortcut "C-c 1" 1)
   (global-window-shortcut "C-c 2" 2)
   (global-window-shortcut "C-c 3" 3)

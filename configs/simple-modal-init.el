@@ -85,7 +85,7 @@
   (require-package 'tuareg)
   (require-package 'php-mode)
   (require-package 'magit)
-    
+  
   (require 'magit)
   ;; (require 'circe)
   (require 'haskell)
