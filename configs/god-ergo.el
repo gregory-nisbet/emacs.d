@@ -4,12 +4,9 @@
 ; do not forget this step.
 (package-initialize)
 (require 'defuns)
+(require 'god-kmacro)
 (set-archives)
-(require 'simple-modal)
-(require 'ace-jump-mode)
-(require 'paredit)
-(require 'window-number)
-(require 'recentf)
+
 
 (package-initialize)
 (setq-config)
@@ -18,6 +15,10 @@
 (load-modes)
 (load-optional-modes)
 (recentf-mode +1)
-(global-set-key (kbd "C-h") 'simple-modal-mode)
+(global-set-key (kbd "C-h") (god-extension-set-mode "enable god mode" t))
 (global-set-key (kbd "C-c h") (lookup-key global-map (kbd "<f1>")))
+(define-key god-local-mode-map (kbd "i") (god-extension-set-mode "disable god mode" nil))
+(define-key god-local-mode-map (kbd "S") 'save-buffer)
+(define-key god-local-mode-map (kbd "F") 'find-file)
+(define-key god-local-mode-map (kbd "V") 'scroll-down-command)
 (sensible-modes)

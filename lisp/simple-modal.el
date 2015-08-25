@@ -19,7 +19,7 @@
 (defvar simple-modal-mode-map (make-sparse-keymap))
 
 (cl-labels 
-  ((key (str command) (simple-modal-key str command)))
+    ((key (str command) (simple-modal-key str command)))
   (key "i" 'simple-modal--disable)
   (key "h" 'backward-char)
   (key "j" 'next-line)
@@ -29,8 +29,9 @@
   (key "o" 'forward-word)
   (key "m" 'scroll-up-command)
   (key "," 'scroll-down-command)
-  (key "s" 'isearch-forward-regexp)
-  (key "r" 'isearch-backward-regexp)
+  ;; repeating isearch repeats or requests is absent
+  (key "s" 'isearch-repeat-forward)
+  (key "r" 'isearch-repeat-backward)
   (key "d" 'backward-delete-char-untabify)
   (key "f" 'delete-forward-char)
   (key "y" 'yank)

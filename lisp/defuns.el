@@ -1,4 +1,3 @@
-
 (defmacro god-extension-set-mode (docstring state)
   "create function to set god-mode to specific state"
   `(lambda ()
@@ -16,6 +15,24 @@
      (lambda ()
        (interactive)
        (window-number-select ,which-window))))
+
+(defmacro god-extension-set-mode (docstring state)
+  "toggle god mode"
+  `(lambda ()
+     ,docstring
+    (interactive)
+    (setq god-global-mode ,state)
+    (if god-global-mode
+        (god-local-mode +1)
+      (god-local-mode -1))))
+
+(defun set-archives ()
+  "set the archives"
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/") 
+       ("org" . "http://orgmode.org/elpa/") 
+       ("marmalade" . "http://marmalade-repo.org/packages/") 
+       ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+       ("melpa" . "http://melpa.milkbox.net/packages/"))))
 
 (defun require-package (package)
   "install package from source"
@@ -52,7 +69,6 @@
   (require-package 'paredit)
   (require-package 'evil)
   (require-package 'php-mode)
-  (require-package 'ace-jump-mode)
 
   (require 'god-mode)
   (require 'ace-jump-mode)
@@ -75,7 +91,9 @@
   (require-package 'tuareg)
   (require-package 'php-mode)
   (require-package 'magit)
-
+  (require-package 'ensime)
+  (require-package 'jdee)
+   
   (require 'magit)
   ;; (require 'circe)
   (require 'haskell)
@@ -85,6 +103,8 @@
   (require 'dockerfile-mode) 
   (require 'markdown-mode)
   (require 'tuareg)
+  (require 'ensime)
+  (require 'jdee)
 
   ;; use this symbol to quickly check if optional modes actually loaded
   (setf DEBUG_LOADED_OPTIONAL t))
@@ -96,8 +116,12 @@
   ;; https://github.com/technomancy/better-defaults/blob/master/better-defaults.el
   ;; (global-set-key (kbd "C-t") 'previous-line)
   ;; (global-set-key (kbd "C-p") 'other-window)
-  ;; (global-set-key (kbd "C-l") 'hippie-expand)
-  ;; (global-set-key (kbd "C-c l") 'recenter-top-bottom)
+
+  (autoload 'zap-up-to-char "misc"
+    "Kill up to, but not including ARGth occurrence of CHAR.")
+
+  (global-set-key (kbd "C-l") 'hippie-expand)
+  (global-set-key (kbd "C-c l") 'recenter-top-bottom)
   (global-set-key (kbd "C-c f") 'frameset-to-register)
   (global-set-key (kbd "C-c j") 'jump-to-register)
   (global-set-key (kbd "C-c a") 'ace-jump-mode)
@@ -122,5 +146,49 @@
   (global-window-shortcut "C-c 8" 8)
   (global-window-shortcut "C-c 9" 9)
   (global-window-shortcut "C-c 0" 10))
+
+(defun dired-extensions ()
+  (define-key dired-mode-map (kbd "C-c C-t") 'dired-previous-line)
+  (define-key dired-mode-map (kbd "C-c C-d") 'dired-toggle-marks)
+  (define-key dired-mode-map (kbd "C-c C-c") 'image-dired-map)
+  (define-key dired-mode-map (kbd "b") 'dired-up-directory))
+
+(defun load-private ()
+  (when (file-exists-p "~/.emacs.d/private.el")
+  (require 'private)))
+
+(defun setq-config ()
+  "miscellaneous setq configuration"
+  (setq visible-bell t)
+  (setq magit-last-seen-setup-instructions "1.4.0")
+  (setq tab-width 4)
+  (setq-default indent-tabs-mode nil)
+  (setq disabled-command-function nil)
+  (setq recentf-max-menu-items 25)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation))
+
+(defun sensible-aliases ()
+  "aliases that are sensible"
+  ; http://ergoemacs.org/emacs/emacs_alias.html
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (defalias 'list-buffers 'ibuffer)
+  (defalias 'perl-mode 'cperl-mode))
+
+(defun sensible-modes ()
+  "enable sensible modes"
+  (recentf-mode +1)
+  (show-paren-mode +1))
+
+(defun delayed-load-optional-modes ()
+  "load optional modes if we've been idle for a while"
+  (setf load-optional (or (daemonp) window-system))
+  (if load-optional (load-optional-modes) (run-with-idle-timer 10 nil #'load-optional-modes)))
+
+(defun dired-changes ()
+  "small changes to dired mode keybindings"
+  (define-key dired-mode-map (kbd "C-c C-t") 'dired-previous-line)
+  (define-key dired-mode-map (kbd "C-c C-d") 'dired-toggle-marks)
+  (define-key dired-mode-map (kbd "C-c C-c") 'image-dired-map)
+  (define-key dired-mode-map (kbd "b") 'dired-up-directory))
 
 (provide 'defuns)
