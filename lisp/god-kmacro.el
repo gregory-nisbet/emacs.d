@@ -1,7 +1,5 @@
 ;; god-kmacro
 
-
-
 ;; create buffer local variable for storing whether we exited
 ;; god-mode for kmacro (this is independent of other pause and
 ;; resume stuff.

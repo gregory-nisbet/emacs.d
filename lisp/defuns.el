@@ -93,7 +93,9 @@
   (require-package 'magit)
   (require-package 'ensime)
   (require-package 'jdee)
-   
+  ;; not god-mode
+  (require-package 'go-mode)
+  
   (require 'magit)
   ;; (require 'circe)
   (require 'haskell)
@@ -105,6 +107,8 @@
   (require 'tuareg)
   (require 'ensime)
   (require 'jdee)
+  ;; not god-mode
+  (require 'go-mode)
 
   ;; use this symbol to quickly check if optional modes actually loaded
   (setf DEBUG_LOADED_OPTIONAL t))
@@ -190,5 +194,31 @@
   (define-key dired-mode-map (kbd "C-c C-d") 'dired-toggle-marks)
   (define-key dired-mode-map (kbd "C-c C-c") 'image-dired-map)
   (define-key dired-mode-map (kbd "b") 'dired-up-directory))
+
+(defun expression-navigation ()
+  "commands for navigating balanced expressions"
+  ;; expression navigation
+  (global-set-key (kbd "C-c c n") 'forward-list)
+  (global-set-key (kbd "C-c c t") 'backward-list)
+  (global-set-key (kbd "C-c c f") 'forward-sexp)
+  (global-set-key (kbd "C-c c b") 'backward-sexp)
+  (global-set-key (kbd "C-c c k") 'kill-sexp)
+
+  ;; not enabled by default because in ratpoison compat
+  ;;(global-set-key (kbd "C-c c r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-c c space") 'mark-sexp))
+
+(defun god-local-mapify ()
+  "define stuff like capital letters in god-local mode"
+  (define-key god-local-mode-map (kbd "i") (god-extension-set-mode "disable god mode" nil))
+  (define-key god-local-mode-map (kbd "S") 'save-buffer)
+  (define-key god-local-mode-map (kbd "F") 'find-file)
+  (define-key god-local-mode-map (kbd "V") 'scroll-down-command)
+  (define-key god-local-mode-map (kbd "R") 'recentf-open-files))
+
+(defun ratpoison-compat ()
+  "remap C-r to previous line so as not to conflict with ratpoison"
+  (global-set-key (kbd "C-r") 'previous-line)
+  (global-set-key (kbd "C-c r") 'isearch-backward-regexp))
 
 (provide 'defuns)

@@ -18,6 +18,13 @@
 (load-modes)
 (load-optional-modes)
 (recentf-mode +1)
+(expression-navigation)
+(ratpoison-compat)
+
+(global-set-key (kbd "C-t") 'previous-line)
+(global-set-key (kbd "C-p") 'transpose-chars)
+
+(global-set-key (kbd "C-.") 'repeat)
 (global-set-key (kbd "C-h") 'simple-modal-mode)
 (global-set-key (kbd "C-c h") (lookup-key global-map (kbd "<f1>")))
 (sensible-modes)
