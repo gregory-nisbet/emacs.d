@@ -19,7 +19,7 @@
 (global-set-key (kbd "C-p") 'transpose-chars)
 (global-set-key (kbd "C-h") (god-extension-set-mode "enable god mode" t))
 (global-set-key (kbd "C-c h") (lookup-key global-map (kbd "<f1>")))
-(define-key god-local-mode (kbd " ") 'repeat)
+(define-key god-local-mode-map (kbd " ") 'repeat)
 
 (global-set-key (kbd "C-.") 'repeat)
 (ratpoison-compat)
