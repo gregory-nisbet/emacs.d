@@ -122,6 +122,8 @@
   (require-package 'jdee)
   ;; not god-mode
   (require-package 'go-mode)
+  (require-package 'wanderlust)
+  (require-package 'w3m)
   
   (require 'magit)
   ;; (require 'circe)
@@ -136,6 +138,12 @@
   (require 'jdee)
   ;; not god-mode
   (require 'go-mode)
+  (require 'w3m)
+
+  ;; recommended from emacswiki
+  ;; http://emacswiki.org/emacs/WanderLust
+  ;; do we need a require here?
+  (autoload 'wl "wl" "Wanderlust" t)
 
   ;; use this symbol to quickly check if optional modes actually loaded
   (setf DEBUG_LOADED_OPTIONAL t))
@@ -252,6 +260,9 @@
   ;; enable repetition of C-c r to repeat search
   (define-key isearch-mode-map (kbd "C-c r") 'isearch-repeat-backward))
 
+
+;; the only one of these I actually like is paste-from-register
+;; but I can't use C-r for that because that is back-line
 ;; These are the commands mapped in insert mode in evil-mode
 ;; most of them are pretty low frequency commands so they will be remapped
 ;; to C-c g <whatever>                    
@@ -308,5 +319,21 @@
   
   
   )
+
+(defun* wanderlust-sensible-defaults ()
+  "wanderlust is hard to set up, so we are using these as defaults"
+
+  ;; taken from https://github.com/wanderlust/wanderlust/issues/98
+  
+  (setq wl-default-folder "%INBOX")
+  
+  )
+
+(defun* wanderlust-setup ()
+  "setting up wanderlust to actually work"
+  ;; w3m might be somewhere else
+  ;; todo make more bulletproof
+  (setq exec-path (cons "/usr/local/bin/" exec-path)))
+
 
 (provide 'defuns)

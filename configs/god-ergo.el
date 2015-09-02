@@ -34,3 +34,6 @@
 (expression-navigation)
 (god-local-mapify)
 (sensible-modes)
+
+(wanderlust-sensible-defaults)
+(wanderlust-setup)
