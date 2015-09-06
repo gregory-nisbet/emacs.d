@@ -159,7 +159,7 @@
   (autoload 'zap-up-to-char "misc"
     "Kill up to, but not including ARGth occurrence of CHAR.")
 
-  (global-set-key (kbd "C-l") 'hippie-expand)
+  ;;(global-set-key (kbd "C-l") 'hippie-expand)
   (global-set-key (kbd "C-c l") 'recenter-top-bottom)
   (global-set-key (kbd "C-c f") 'frameset-to-register)
   (global-set-key (kbd "C-c j") 'jump-to-register)
