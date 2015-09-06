@@ -335,5 +335,13 @@
   ;; todo make more bulletproof
   (setq exec-path (cons "/usr/local/bin/" exec-path)))
 
+(defun populate-keymap (keymap map)
+  "populate keymap with entries from map"
+  (cl-assert (keymapp keymap))
+  (cl-assert (consp map))
+  (mapcar
+   (lambda (x)
+     (let ((key (nth 0 x)) (value (nth 1 x)))
+       (define-key keymap key value)) map)))
 
 (provide 'defuns)
