@@ -251,7 +251,12 @@
   (define-key god-local-mode-map (kbd "S") 'save-buffer)
   (define-key god-local-mode-map (kbd "F") 'find-file)
   (define-key god-local-mode-map (kbd "V") 'scroll-down-command)
-  (define-key god-local-mode-map (kbd "R") 'recentf-open-files))
+  (define-key god-local-mode-map (kbd "R") 'recentf-open-files)
+  (define-key god-local-mode-map (kbd "h") 'backward-char)
+  (define-key god-local-mode-map (kbd "j") 'next-line)
+  (define-key god-local-mode-map (kbd "k") 'previous-line)
+  (define-key god-local-mode-map (kbd "l") 'forward-char)
+  (define-key god-local-mode-map (kbd "SPC") 'next-line))
 
 (defun* ratpoison-compat ()
   "remap C-r to previous line so as not to conflict with ratpoison"
