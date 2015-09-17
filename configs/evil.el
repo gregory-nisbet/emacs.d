@@ -64,9 +64,10 @@
 (define-key evil-normal-state-map (kbd "g c") #'evil-search-forward)
 (define-key evil-normal-state-map (kbd "g T") #'previous-buffer)
 (define-key evil-normal-state-map (kbd "g t") #'next-buffer)
-(define-key evil-normal-state-map (kbd "g H") #'evil-window-top)
-(define-key evil-normal-state-map (kbd "g L") #'evil-window-bottom)
-  
+(define-key evil-normal-state-map (kbd "g h") #'evil-window-top)
+(define-key evil-normal-state-map (kbd "g l") #'evil-window-bottom)
+(define-key evil-normal-state-map (kbd "SPC") #'next-line)
+
 ;; leaderkey stuff, available in every mode.
 (define-key evil-overlord-map (kbd "o") #'list-buffers)
 (define-key evil-overlord-map (kbd "h") #'windmove-left)
@@ -91,3 +92,11 @@
 ;; icicles rebinds C-h? maybe
 ;; (define-key icicle-mode-map (kbd "C-h") nil)
 
+(setf evil-org-evil-leader-enabled nil)
+(require 'evil-org)
+
+(cl-flet ((d (key fun) (define-key evil-overlord-map (kbd key) fun)))
+  (d "a" #'org-agenda)
+  (d "t" #'org-show-todo-tree)
+  (d "c" #'org-archive-subtree)
+  (d "l" #'evil-org-open-links))

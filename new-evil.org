@@ -1,0 +1,102 @@
+#+TITLE: New Evil
+This is meant to more closely approximate the look and feel of my vim config.
+My vim config is good enough that I am not constantly modifying it.
+* cl-lib, load-path, themes
+  add the lisp directory to the load-path
+  because my patched versions of files are in there.
+  I use cl-lib for everything.
+#+BEGIN_SRC emacs-lisp
+  (require 'cl-lib)
+  (add-to-list 'load-path "~/.emacs.d/lisp")
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+  (package-initialize)
+#+END_SRC
+
+* require-package 
+define require-package
+#+BEGIN_SRC emacs-lisp
+  (defun require-package (package)
+    "install package from source"
+    (setq-default highlight-tabs t)
+    "Install given PACKAGE." 
+    (unless (package-installed-p package) 
+      (unless (assoc package package-archive-contents) 
+        (package-refresh-contents)) 
+      (package-install package)))
+#+END_SRC
+
+* archives
+Set the package archives to gnu, org, marmalad, melpa-stable, and melpa
+#+BEGIN_SRC emacs-lisp
+  (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/") 
+                           ("org" . "http://orgmode.org/elpa/") 
+                           ("marmalade" . "http://marmalade-repo.org/packages/") 
+                           ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+                           ("melpa" . "http://melpa.milkbox.net/packages/")))
+  (package-initialize)
+#+END_SRC
+
+* setq section
+evil scrolling with C-u is super important to me for muscle memory
+regexp search is also important.
+#+BEGIN_SRC emacs-lisp
+  (setq evil-want-C-u-scroll t)
+  (setq evil-regexp-search t)
+#+END_SRC
+
+* evil: fetch and require
+get evil-related packages
+#+BEGIN_SRC emacs-lisp
+  (defun get-package (item)
+    "fetch package over network and get"
+    (require-package item)
+    (require item))
+
+  (mapcar #'get-package 
+          '(evil evil-leader evil-org evil-nerd-commenter))
+#+END_SRC
+
+* other packages
+get ido
+#+BEGIN_SRC emacs-lisp
+  (mapcar #'get-package '(ido))
+#+END_SRC
+* keybindings
+C-l is normal mode, C-c l is recenter
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-l") #'evil-normal-state)
+  (global-set-key (kbd "C-c l") #'recenter-top-bottom)
+#+END_SRC
+
+hippie-mode M-SPC, M-/, C-f (for univeral), C-c (for enter normal mode)
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-insert-state-map (kbd "M-SPC") #'hippie-expand)
+  (define-key evil-insert-state-map (kbd "M-/") #'hippie-expand)
+  (define-key evil-normal-state-map (kbd "C-f") #'universal-argument)
+    
+  (define-key evil-insert-state-map (kbd "C-c") #'evil-normal-state)
+  (define-key evil-visual-state-map (kbd "C-c") #'evil-normal-state)
+  (define-key evil-operator-state-map (kbd "C-c") #'evil-normal-state)
+#+END_SRC
+
+* configure evil
+leader mode and activate nerd commenter
+#+BEGIN_SRC emacs-lisp
+  (global-evil-leader-mode)
+  (evil-leader/set-leader ",")
+  ;; default hotkeys for evil-nerd-commenter
+  (evilnc-default-hotkeys)
+  (global-evil-leader-mode)
+  (evil-mode +1)
+#+END_SRC
+* configure modes
+showparen
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode +1)
+#+END_SRC
+* appearance
+Wombat theme looks amazing
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'wombat)
+#+END_SRC
+
