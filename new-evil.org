@@ -1,6 +1,23 @@
-#+TITLE: New Evil
+#+TITLE: New Evil あたらしいイベル
 This is meant to more closely approximate the look and feel of my vim config.
 My vim config is good enough that I am not constantly modifying it.
+
+* TODO
+
+evil configuration for leader keys should not go after the rest of the
+keymap configuration.
+
+icy-mode and org-mode have many conflicts that I need to resolve.
+Right now I am resolving them by turning icy-mode off completely which is less than ideal.
+
+<leader>w is an almost totally useless keybinding because gs does the same thing.
+I just forgot about it.
+
+the leader map generally needs to be filled out for more useful stuff
+
+idea.
+some kind of timing thing so pressing C-c C-c quickly does the right thing regardless of mode.
+
 * cl-lib, load-path, themes
   add the lisp directory to the load-path
   because my patched versions of files are in there.
@@ -39,13 +56,35 @@ Set the package archives to gnu, org, marmalad, melpa-stable, and melpa
 * setq section
 evil scrolling with C-u is super important to me for muscle memory
 regexp search is also important.
+the nlinum format doesn't have enough padding between it and the left margin.
 #+BEGIN_SRC emacs-lisp
-  (setq evil-want-C-u-scroll t)
   (setq evil-regexp-search t)
+  (setq nlinum-format "%d  ")
+  (setq visual-bell t)
+  (setq ring-bell-function #'ignore)  
+  (setq tab-width 4)
+  (setq-default indent-tabs-mode nil)
+  (setq disabled-command-function nil)
+  (setq recentf-max-menu-items 25)
+#+END_SRC
+
+haskell mode hook
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+#+END_SRC
+
+aliases are good
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (defalias 'list-buffers 'ibuffer)
+  (defalias 'perl-mode 'cperl-mode)
 #+END_SRC
 
 * evil: fetch and require
 get evil-related packages
+
+Is evil-org really that great?
+
 #+BEGIN_SRC emacs-lisp
   (defun get-package (item)
     "fetch package over network and get"
@@ -53,46 +92,145 @@ get evil-related packages
     (require item))
 
   (mapcar #'get-package 
-          '(evil evil-leader evil-org evil-nerd-commenter))
+          '(evil evil-leader evil-nerd-commenter))
 #+END_SRC
 
 * other packages
-get ido
+get ido and other useful modes
+nlinum is a better replacement for nlinum.
 #+BEGIN_SRC emacs-lisp
-  (mapcar #'get-package '(ido))
+  (mapcar #'get-package
+          '(ido ace-jump-mode paredit recentf org haskell-mode eww
+                web-mode dockerfile-mode markdown-mode
+                tuareg php-mode magit ensime jdee nlinum
+                icicles anything))
+  (require-package 'wanderlust)
 #+END_SRC
 * keybindings
-C-l is normal mode, C-c l is recenter
+need to find something more useful for C-l to do.
+C-l is normal mode, C-c r is recenter
+C-c {c, l, p} are taken by nerd commenter.
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-l") #'evil-normal-state)
-  (global-set-key (kbd "C-c l") #'recenter-top-bottom)
+  ;;  (global-set-key (kbd "C-l") #'evil-normal-state)
+  ;;  (global-set-key (kbd "C-c r") #'recenter-top-bottom)
 #+END_SRC
 
 hippie-mode M-SPC, M-/, C-f (for univeral), C-c (for enter normal mode)
 #+BEGIN_SRC emacs-lisp
-  (define-key evil-insert-state-map (kbd "M-SPC") #'hippie-expand)
-  (define-key evil-insert-state-map (kbd "M-/") #'hippie-expand)
+  (global-set-key (kbd "M-SPC") #'hippie-expand)
+  (global-set-key (kbd "M-/") #'hippie-expand)
   (define-key evil-normal-state-map (kbd "C-f") #'universal-argument)
-    
+  (define-key evil-normal-state-map (kbd "C-u") #'evil-scroll-up) 
+
+  (define-key evil-insert-state-map (kbd "C-u") #'kill-whole-line)
   (define-key evil-insert-state-map (kbd "C-c") #'evil-normal-state)
   (define-key evil-visual-state-map (kbd "C-c") #'evil-normal-state)
   (define-key evil-operator-state-map (kbd "C-c") #'evil-normal-state)
+
+
+  (defvar normal-mode-universal-argument-map universal-argument-map
+    "swap C-f and C-u in universal-argument-map")
+  (define-key normal-mode-universal-argument-map (kbd "C-u") nil)
+  (define-key normal-mode-universal-argument-map
+    (kbd "C-f") #'universal-argument-more)
+
+  (defun normal-mode-universal-argument ()
+    "universal-argument with C-f and C-u swapped"
+    (let ((universal-argument-map normal-mode-universal-argument-map))
+      (universal-argument)))
+
+
+
 #+END_SRC
+
+more g keys.
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-normal-state-map (kbd "g r") #'recentf-open-files)
+  (define-key evil-normal-state-map (kbd "g s") #'save-buffer)
+  (define-key evil-normal-state-map (kbd "g c") #'evil-search-forward)
+  (define-key evil-normal-state-map (kbd "g T") #'previous-buffer)
+  (define-key evil-normal-state-map (kbd "g t") #'next-buffer)
+  (define-key evil-normal-state-map (kbd "g h") #'evil-window-top)
+  (define-key evil-normal-state-map (kbd "g l") #'evil-window-bottom)
+#+END_SRC
+
+easier way to navigate s-expressions
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c c n") 'forward-list)
+  (global-set-key (kbd "C-c c t") 'backward-list)
+  (global-set-key (kbd "C-c c f") 'forward-sexp)
+  (global-set-key (kbd "C-c c b") 'backward-sexp)
+  (global-set-key (kbd "C-c c k") 'kill-sexp)
+
+  ;; not enabled by default because in ratpoison compat
+  ;;(global-set-key (kbd "C-c c r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-c c space") 'mark-sexp)
+#+END_SRC
+
 
 * configure evil
 leader mode and activate nerd commenter
 #+BEGIN_SRC emacs-lisp
   (global-evil-leader-mode)
-  (evil-leader/set-leader ",")
   ;; default hotkeys for evil-nerd-commenter
   (evilnc-default-hotkeys)
   (global-evil-leader-mode)
   (evil-mode +1)
 #+END_SRC
+
+** leader-section
+
+*** keymap summary
+`evil-normal-state-local-minor-mode' Minor Mode Bindings Starting With ,:
+key             binding
+---             -------
+
+, d             evil-repeat-find-char-reverse
+, w             save-buffer
+
+`evil-normal-state-minor-mode' Minor Mode Bindings Starting With ,:
+key             binding
+---             -------
+
+, ,             evilnc-comment-operator
+, c             Prefix Command
+, l             Prefix Command
+
+, l l           evilnc-quick-comment-or-uncomment-to-the-line
+
+, c c           evilnc-copy-and-comment-lines
+, c i           evilnc-comment-or-uncomment-lines
+, c l           evilnc-quick-comment-or-uncomment-to-the-line
+, c p           evilnc-comment-or-uncomment-paragraphs
+, c r           comment-or-uncomment-region
+, c v           evilnc-toggle-invert-comment-line-by-line
+
+*** keymap definition
+
+leader-mode set leader and keys
+leader keys
+#+BEGIN_SRC emacs-lisp
+  (evil-leader/set-leader (kbd ","))
+  (evil-leader/set-key
+    (kbd "w") #'save-buffer
+    (kbd "d") #'evil-repeat-find-char-reverse)
+#+END_SRC
+
 * configure modes
 showparen
+icy mode has negative interaction with default org-mode bindings like
+C-c '
+find a way to exempt it or else change the bindings
 #+BEGIN_SRC emacs-lisp
   (show-paren-mode +1)
+  (recentf-mode +1)
+  ;;(icy-mode +1)
+#+END_SRC
+wanderlust configuration is different. Needs to be autolaoded but can't be required
+for some reason this is recommended in the wiki over
+(require 'wl)
+#+BEGIN_SRC emacs-lisp
+  (autoload 'wl "wl" "Wanderlust" t)
 #+END_SRC
 * appearance
 Wombat theme looks amazing
