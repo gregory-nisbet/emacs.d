@@ -13,6 +13,8 @@ Right now I am resolving them by turning icy-mode off completely which is less t
 <leader>w is an almost totally useless keybinding because gs does the same thing.
 I just forgot about it.
 
+more vimlike dired.
+
 the leader map generally needs to be filled out for more useful stuff
 
 idea.
@@ -102,11 +104,12 @@ nlinum is a better replacement for nlinum.
   (mapcar #'get-package
           '(ido ace-jump-mode paredit recentf org haskell-mode eww
                 web-mode dockerfile-mode markdown-mode
-                tuareg php-mode magit ensime jdee nlinum
+                tuareg php-mode magit ensime nlinum
                 icicles anything))
   (require-package 'wanderlust)
 #+END_SRC
 * keybindings
+** C-l rebinding or not
 need to find something more useful for C-l to do.
 C-l is normal mode, C-c r is recenter
 C-c {c, l, p} are taken by nerd commenter.
@@ -115,6 +118,7 @@ C-c {c, l, p} are taken by nerd commenter.
   ;;  (global-set-key (kbd "C-c r") #'recenter-top-bottom)
 #+END_SRC
 
+** Hippie Mode, C-f universal argument, C-c for escape
 hippie-mode M-SPC, M-/, C-f (for univeral), C-c (for enter normal mode)
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-SPC") #'hippie-expand)
@@ -126,7 +130,6 @@ hippie-mode M-SPC, M-/, C-f (for univeral), C-c (for enter normal mode)
   (define-key evil-insert-state-map (kbd "C-c") #'evil-normal-state)
   (define-key evil-visual-state-map (kbd "C-c") #'evil-normal-state)
   (define-key evil-operator-state-map (kbd "C-c") #'evil-normal-state)
-
 
   (defvar normal-mode-universal-argument-map universal-argument-map
     "swap C-f and C-u in universal-argument-map")
@@ -143,6 +146,15 @@ hippie-mode M-SPC, M-/, C-f (for univeral), C-c (for enter normal mode)
 
 #+END_SRC
 
+** f key stuff (work in progress)
+#+BEGIN_SRC emacs-lisp
+  (setq normal-f-map (make-keymap))
+  (define-prefix-command 'normal-f-command 'normal-f-map)
+  (define-key normal-f-map (kbd "f") #'evil-find-char) 
+  (define-key normal-f-map (kbd "u") #'scroll-other-window-down)
+  (define-key normal-f-map (kbd "d") #'scroll-other-window)
+#+END_SRC
+** more g key stuff
 more g keys.
 #+BEGIN_SRC emacs-lisp
   (define-key evil-normal-state-map (kbd "g r") #'recentf-open-files)
@@ -154,19 +166,37 @@ more g keys.
   (define-key evil-normal-state-map (kbd "g l") #'evil-window-bottom)
 #+END_SRC
 
+** s-expression navigation C-c (non-leader)
 easier way to navigate s-expressions
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c c n") 'forward-list)
-  (global-set-key (kbd "C-c c t") 'backward-list)
-  (global-set-key (kbd "C-c c f") 'forward-sexp)
-  (global-set-key (kbd "C-c c b") 'backward-sexp)
-  (global-set-key (kbd "C-c c k") 'kill-sexp)
+  (global-set-key (kbd "C-c h n") 'forward-list)
+  (global-set-key (kbd "C-c h t") 'backward-list)
+  (global-set-key (kbd "C-c h t") 'backward-list)
+  (global-set-key (kbd "C-c h t") 'backward-list)
+  (global-set-key (kbd "C-c h t") 'backward-list)
+  (global-set-key (kbd "C-c h f") 'forward-sexp)
+  (global-set-key (kbd "C-c h b") 'backward-sexp)
+  (global-set-key (kbd "C-c h k") 'kill-sexp)
 
   ;; not enabled by default because in ratpoison compat
   ;;(global-set-key (kbd "C-c c r") 'isearch-backward-regexp)
-  (global-set-key (kbd "C-c c space") 'mark-sexp)
+  (global-set-key (kbd "C-c h SPC") 'mark-sexp)
 #+END_SRC
 
+recommended org-mode keys
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c l") #'org-store-link)
+  (global-set-key (kbd "C-c a") #'org-agenda)
+  (global-set-key (kbd "C-c c") #'org-capture)
+  (global-set-key (kbd "C-c b") #'org-iswitchb)
+#+END_SRC
+
+** recentf more vimlike
+patch recentf mode
+#+BEGIN_SRC emacs-lisp
+  (define-key recentf-dialog-mode-map (kbd "j") #'next-line)
+  (define-key recentf-dialog-mode-map (kbd "k") #'previous-line)
+#+END_SRC
 
 * configure evil
 leader mode and activate nerd commenter
@@ -181,12 +211,16 @@ leader mode and activate nerd commenter
 ** leader-section
 
 *** keymap summary
+
 `evil-normal-state-local-minor-mode' Minor Mode Bindings Starting With ,:
 key             binding
 ---             -------
 
+, a             evil-beginning-of-visual-line
 , d             evil-repeat-find-char-reverse
+, e             evil-end-of-visual-line
 , w             save-buffer
+
 
 `evil-normal-state-minor-mode' Minor Mode Bindings Starting With ,:
 key             binding
@@ -204,7 +238,6 @@ key             binding
 , c p           evilnc-comment-or-uncomment-paragraphs
 , c r           comment-or-uncomment-region
 , c v           evilnc-toggle-invert-comment-line-by-line
-
 *** keymap definition
 
 leader-mode set leader and keys
@@ -213,7 +246,10 @@ leader keys
   (evil-leader/set-leader (kbd ","))
   (evil-leader/set-key
     (kbd "w") #'save-buffer
-    (kbd "d") #'evil-repeat-find-char-reverse)
+    (kbd "d") #'evil-repeat-find-char-reverse
+    (kbd "a") #'evil-beginning-of-visual-line
+    (kbd "e") #'evil-end-of-visual-line
+    (kbd "j") #'join-line)
 #+END_SRC
 
 * configure modes
